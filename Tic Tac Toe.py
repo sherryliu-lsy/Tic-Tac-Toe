@@ -164,6 +164,9 @@ def game():
             print("It's a tie!")
             if again():
                 game()
+            else:
+                print("Thanks for playing!")
+                break
         
         elif counter % 2 == 0:
             if choice == 0:
@@ -205,18 +208,19 @@ def game():
             print("Congradulations! You've won :)")
             if again():
                 game()
-            break
+            else:
+                print("Thanks for playing!")
+                break
         elif has_won(board, player_2):
             if choice == 3:
                 println("Congradulations to Player 2! :)")
             else:
                 print("Game over. Computer won.")
             if again():
-                game()  
-            break
+                game()
+            else:
+                print("Thanks for playing!")
+                break
         else:
             continue
-
-    print("Thanks for playing!")
-
 game()
