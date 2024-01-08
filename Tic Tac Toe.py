@@ -83,7 +83,6 @@ def computer_hard(board):
                 computer1[i][j] = player_1
             if has_won(computer1, player_1):
                 board[i][j] = "O"
-                print('aaa')
                 return 0
 
     # 3. the next best moves:
