@@ -62,6 +62,29 @@ def computer_easy(board):
     choice1 = random.choice(find_spot(board))
     board[choice1[0]][choice1[1]] = "O"
 
+def computer_medium(board):
+    
+    # 1. if computer can win in next step, win immediately
+    for i in range(3):
+        for j in range(3):
+            computer1 = make_copy(board)
+            if is_valid_turn(computer1, i ,j):
+                computer1[i][j] = "O"
+                if has_won(computer1, player_2):
+                    board[i][j] = "O"
+                    return 0
+
+    # 2. if player can win in next step, stop player
+    for i in range(3):
+        for j in range(3):
+            computer1 = make_copy(board)
+            if is_valid_turn(computer1, i ,j):
+                computer1[i][j] = player_1
+            if has_won(computer1, player_1):
+                board[i][j] = "O"
+                return 0
+                
+    computer_easy(board)
 
 def computer_hard(board):
     
@@ -124,7 +147,12 @@ def game():
     print()
     print("Welcome to tic-tac-toe!")
 
-    choice = int(input("(1) Computer (easy); (2) Computer (hard); (3) Two-Player Match "))
+    start = int(input("(1) Player vs Computer; (2) Player 1 vs Player 2 "))
+    if start == 1:
+        choice = int(input("Select difficulty: (1) Easy; (2) Medium; (3) IMPOSSIBLE "))
+    else:
+        choice = 0
+        
     print()
     
     print_board(board)
@@ -138,7 +166,7 @@ def game():
                 game()
         
         elif counter % 2 == 0:
-            if choice == 3:
+            if choice == 0:
                 input_1 = input("Player 1: Where would you like to play? ")
             else:
                 input_1 = input("Player: Where would you like to play? ")
@@ -151,7 +179,7 @@ def game():
 
         else:
 
-            if choice == 3:
+            if choice == 0:
                 input_2 = input("Player 2: Where would you like to play? ")
                 if len(str(input_2)) == 2 and is_valid_turn(board, int(input_2[0]), int(input_2[1])):
                     board[int(input_2[0])][int(input_2[1])] = player_2
@@ -164,6 +192,8 @@ def game():
                 counter += 1
                 if choice == 1:
                     computer_easy(board)
+                elif choice == 2:
+                    computer_medium(board)
                 else:
                     computer_hard(board)
 
