@@ -14,17 +14,14 @@ def make_copy(board):
         duplicate.append(copy.copy(board[i]))
     return duplicate
 
-
 def reset_board(board):
     board = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
-
 
 def is_valid_turn(board, i, j):
     if board[i][j] == " " and 3 > i > -1 and 3 > j > -1:
         return True
     else:
         return False
-
 
 def has_won(board, player):
     if board[0][0] == player and board[1][1] == player and board[2][2] == player:
@@ -47,7 +44,6 @@ def has_won(board, player):
         return True
     else:
         return False
-
 
 def find_spot(board):
     spots = []
@@ -125,8 +121,6 @@ def computer_hard(board):
     # any random place
     computer_easy(board)
 
-# Game engine
-
 def again():
     again = 0
     while again != "yes" and again != "no":
@@ -136,22 +130,42 @@ def again():
     else:
         return False
 
+def end_of_round():
+    if again():
+        game()
+    else:
+        print("Thanks for playing!")
+    
+def invalid_input_msg():
+    print("Invalid input. Please try again.\n")
+
+# Game engine
 def game():
 
     board = [[" ", " ", " "],
-        [" ", " ", " "],
-        [" ", " ", " "]]
+            [" ", " ", " "],
+            [" ", " ", " "]]
     won = False
     counter = 0
 
-    print()
+    print("\n********************************************************************")
     print("Welcome to tic-tac-toe!")
+    print("********************************************************************\n")
+    print("The first player to get all three in a row, column, or diagonal wins!")
+    print("Please enter your placement choice as \"rowcol\" (e.g. 12 is row 1 col 2)\n")
 
-    start = int(input("(1) Player vs Computer; (2) Player 1 vs Player 2 "))
-    if start == 1:
-        choice = int(input("Select difficulty: (1) Easy; (2) Medium; (3) IMPOSSIBLE "))
-    else:
-        choice = 0
+    while True:
+        start = int(input("(1) Player vs Computer; (2) Player 1 vs Player 2 "))
+        if start == 1:
+            choice = int(input("Select difficulty: (1) Easy; (2) Medium; (3) IMPOSSIBLE "))
+            break
+        elif start == 2:
+            choice = 0 # two-player game
+            break
+        else:
+            invalid_input_msg()
+
+        
         
     print()
     
@@ -162,22 +176,19 @@ def game():
 
         if counter == 9:
             print("It's a tie!")
-            if again():
-                game()
-            else:
-                print("Thanks for playing!")
-                break
+            end_of_round()
         
         elif counter % 2 == 0:
             if choice == 0:
                 input_1 = input("Player 1: Where would you like to play? ")
             else:
                 input_1 = input("Player: Where would you like to play? ")
+            
             if len(str(input_1)) == 2 and is_valid_turn(board, int(input_1[0]), int(input_1[len(input_1)-1])):
                 board[int(input_1[0])][int(input_1[1])] = player_1
                 counter += 1
             else:
-                print("Invalid input. Please try again.")
+                invalid_input_msg()
                 continue
 
         else:
@@ -188,7 +199,7 @@ def game():
                     board[int(input_2[0])][int(input_2[1])] = player_2
                     counter += 1
                 else:
-                    print("Invalid input. Please try again.")
+                    invalid_input_msg()
                     continue
             else:
                 print("Computer:")
@@ -206,21 +217,14 @@ def game():
         if has_won(board, player_1):
             won = True
             print("Congradulations! You've won :)")
-            if again():
-                game()
-            else:
-                print("Thanks for playing!")
-                break
+            end_of_round()
         elif has_won(board, player_2):
-            if choice == 3:
-                println("Congradulations to Player 2! :)")
+            if choice == 0:
+                print("Congradulations to Player 2! :)")
             else:
                 print("Game over. Computer won.")
-            if again():
-                game()
-            else:
-                print("Thanks for playing!")
-                break
+            end_of_round()
         else:
             continue
+
 game()
